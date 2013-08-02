@@ -1,0 +1,8 @@
+{
+	"server": "server.slsknet.org",
+	"port": 2242,
+	"username": "None",
+	"password": "None",
+	"ignore": ["Bombenhagel", "!SpellXeca"],
+	"rooms": ["nicotine"]
+}
