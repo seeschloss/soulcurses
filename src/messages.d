@@ -24,7 +24,7 @@ module messages;
 import defines;
 
 import std.stream, std.outbuffer, std.cstream;
-import std.format, std.md5, std.conv, std.string;
+import std.format, std.digest.md, std.conv, std.string;
 
 private import message_codes;
 
@@ -149,7 +149,7 @@ class ULogin : Message
 				// to be sent by the client at login when the
 				// cient version is not 198 or 150.
 			ubyte[16] digest;
-			sum (digest, name ~ pass);
+			digest = md5Of (name ~ pass);
 			string sum;
 			foreach (ubyte u ; digest)
 				sum ~= format ("%02x", u);
@@ -743,7 +743,7 @@ class SLogin : Message
 					// client uses it to check if it is connected
 					// to the official server.
 				ubyte[16] digest;
-				sum (digest, password);
+				md5Of (digest, password);
 				string sum;
 				foreach (ubyte u ; digest)
 					sum ~= format ("%02x", u);

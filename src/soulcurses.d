@@ -209,8 +209,8 @@ void on_pm (Stream s, int code)
 		}
 
 	auto time = Clock.currTime(UTC());
-	printf("[%04d/%02d/%02d %02d:%02d:%02d UTC] Received PM from %.*s: ", time.year, time.month, time.day, time.hour, time.minute, time.second, m.from);
-	printf("\"%.*s\"\n", m.content);
+	printf("[%04d/%02d/%02d %02d:%02d:%02d UTC] Received PM from %s: ", time.year, time.month, time.day, time.hour, time.minute, time.second, m.from.toStringz());
+	printf("\"%s\"\n", m.content.toStringz());
 	
 	void answer (S...)(S args)
 		{
