@@ -202,7 +202,7 @@ void on_part (Stream s, int code)
 void on_pm (Stream s, int code)
 	{
 	SMessageUser m = new SMessageUser (s);
-	if (m.from == "DeusErgoVeritas" || m.from == "BlakbirdzejA")
+	if (m.from in ignore)
 		{
 		server.send (new UMessageAcked (m.id));
 		return;
