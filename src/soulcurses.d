@@ -118,6 +118,7 @@ void setup_server (bool new_thread)
 	server.on_reception (UserJoinedRoom, &on_join);
 	server.on_reception (UserLeftRoom  , &on_part);
 	server.on_reception (MessageUser   , &on_pm);
+//	server.on_reception (RoomTicker    , &on_ticker);
 
 	while (true)
 		{
@@ -197,6 +198,18 @@ void on_part (Stream s, int code)
 	{
 	SUserLeftRoom m =new SUserLeftRoom (s);
 	//log ("Someone left room %s: %s", m.room, m.username);
+	}
+
+void on_ticker (Stream s, int code)
+	{
+	SRoomTicker m = new SRoomTicker (s);
+
+	auto time = Clock.currTime(UTC());
+	printf("[%04d/%02d/%02d %02d:%02d:%02d UTC] Tickers in room %s:\n", time.year, time.month, time.day, time.hour, time.minute, time.second, m.room.toStringz());
+	foreach (string user, string ticker; m.tickers)
+		{
+		printf("[%04d/%02d/%02d %02d:%02d:%02d UTC] %s: %s\n", time.year, time.month, time.day, time.hour, time.minute, time.second, user.toStringz(), ticker.toStringz());
+		}
 	}
 
 void on_pm (Stream s, int code)
