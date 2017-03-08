@@ -44,6 +44,8 @@ extern (C)
 		{
 		parse_conf(conf_file);
 		}
+
+	char * readline (const char *prompt);
 	}
 
 
@@ -59,26 +61,36 @@ class InputThread : core.thread.Thread
 
 	private void run ()
 		{
-		while (!din.eof())
+		while (true)
 			{
-			string line = din.readLine().idup;
+			string line = to!string(readline("> "));
 			this.server.say (line);
 			}
 		}
 	}
 
+void print (S...)(S args)
+	{
+	auto time = Clock.currTime(UTC());
+	dout.writef("\r[%04d/%02d/%02d %02d:%02d:%02d UTC] ", time.year, time.month, time.day, time.hour, time.minute, time.second);
+	dout.writef(args);
+	dout.writef("\n> ");
+	dout.flush();
+	}
+
 void log (S...)(S args)
 	{
 	auto time = Clock.currTime(UTC());
-	dout.writef("[%04d/%02d/%02d %02d:%02d:%02d UTC] ", time.year, time.month, time.day, time.hour, time.minute, time.second);
+	dout.writef("\r[%04d/%02d/%02d %02d:%02d:%02d UTC] ", time.year, time.month, time.day, time.hour, time.minute, time.second);
 	dout.writef(args);
-	dout.writef("\n");
+	dout.writef("\n> ");
+	dout.flush();
 	}
 
 void err (S...)(S args)
 	{
 	auto time = Clock.currTime(UTC());
-	derr.writef("[%04d/%02d/%02d %02d:%02d:%02d UTC] ", time.year, time.month, time.day, time.hour, time.minute, time.second);
+	derr.writef("\r[%04d/%02d/%02d %02d:%02d:%02d UTC] ", time.year, time.month, time.day, time.hour, time.minute, time.second);
 	derr.writef(args);
 	derr.writef("\n");
 	}
@@ -180,11 +192,7 @@ void on_saychatroom (Stream s, int code)
 	SSayChatroom m = new SSayChatroom (s);
 	if (m.user !in ignore)
 		{
-		printf ("[%04d/%02d/%02d %02d:%02d:%02d UTC] ", time.year, time.month, time.day, time.hour, time.minute, time.second);
-		//printf ("[%.*s] %.*s> %.*s\n", m.room, m.user, m.mesg);
-		printf ("[%s] %s> %s\n", toStringz(m.room), toStringz(m.user), toStringz(m.mesg));
-		//printf ("[%.*s] %.*s> ", m.room, m.user);
-		//dout.writefln ("%s", m.mesg);
+		print("[%s] %s> %s", m.room, m.user, m.mesg);
 		}
 	}
 
@@ -204,11 +212,10 @@ void on_ticker (Stream s, int code)
 	{
 	SRoomTicker m = new SRoomTicker (s);
 
-	auto time = Clock.currTime(UTC());
-	printf("[%04d/%02d/%02d %02d:%02d:%02d UTC] Tickers in room %s:\n", time.year, time.month, time.day, time.hour, time.minute, time.second, m.room.toStringz());
+	print("Tickers in room %s:", m.room);
 	foreach (string user, string ticker; m.tickers)
 		{
-		printf("[%04d/%02d/%02d %02d:%02d:%02d UTC] %s: %s\n", time.year, time.month, time.day, time.hour, time.minute, time.second, user.toStringz(), ticker.toStringz());
+		print("  %s: %s", user, ticker);
 		}
 	}
 
@@ -222,8 +229,7 @@ void on_pm (Stream s, int code)
 		}
 
 	auto time = Clock.currTime(UTC());
-	printf("[%04d/%02d/%02d %02d:%02d:%02d UTC] Received PM from %s: ", time.year, time.month, time.day, time.hour, time.minute, time.second, m.from.toStringz());
-	printf("\"%s\"\n", m.content.toStringz());
+	print("Received PM from %s: \"%s\"", m.from, m.content);
 	
 	void answer (S...)(S args)
 		{
