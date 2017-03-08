@@ -20,13 +20,15 @@
 
 module soulcurses;
 
-import system, messages, message_codes;
+import messages, message_codes;
 
 import undead.cstream, std.file,  std.datetime;
 import std.socket, undead.stream, undead.socketstream, core.thread;
 
 import std.json, std.array, std.string, std.variant, std.regex;
 import std.random, core.stdc.stdlib, std.conv;
+
+import core.stdc.stdlib;
 
 Server server;
 
@@ -106,7 +108,7 @@ int main (string[] args)
 		}
 	else if (args.length == 1)
 		{
-		conf_file = system.getenv ("HOME") ~ "/" ~ ".soulcursesrc";
+		conf_file = to!string(getenv("HOME")) ~ "/" ~ ".soulcursesrc";
 		parse_conf (conf_file);
 		}
 	else

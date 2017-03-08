@@ -11,7 +11,6 @@ FILES=$(SRCDIR)/soulcurses.d \
       $(SRCDIR)/messages.d \
       $(SRCDIR)/message_codes.d \
       $(SRCDIR)/defines.d \
-      $(SRCDIR)/system.d \
       $(SRCDIR)/undead/doformat.d \
       $(SRCDIR)/undead/internal/file.d \
       $(SRCDIR)/undead/cstream.d \
