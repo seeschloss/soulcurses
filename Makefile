@@ -11,7 +11,13 @@ FILES=$(SRCDIR)/soulcurses.d \
       $(SRCDIR)/messages.d \
       $(SRCDIR)/message_codes.d \
       $(SRCDIR)/defines.d \
-      $(SRCDIR)/system.d
+      $(SRCDIR)/system.d \
+      $(SRCDIR)/undead/doformat.d \
+      $(SRCDIR)/undead/internal/file.d \
+      $(SRCDIR)/undead/cstream.d \
+      $(SRCDIR)/undead/socketstream.d \
+      $(SRCDIR)/undead/stream.d
+
 
 BIN=$(BINDIR)/soulcurses
 
@@ -23,9 +29,9 @@ $(BIN): $(FILES)
 	@mkdir -p $(OBJDIR)
 	@mkdir -p $(BINDIR)
 ifeq ($(DC), gdc)
-		$(DC) $(FILES) -I$(SRCDIR) -o$(BIN)
+		$(DC) $(FILES) -I$(SRCDIR) -lreadline -o$(BIN)
 else
-		$(DC) $(FILES) -I$(SRCDIR) -od$(OBJDIR) -of$(BIN) -gc
+		$(DC) $(FILES) -I$(SRCDIR) -L-lreadline -od$(OBJDIR) -of$(BIN) -gc
 endif
 
 install: $(SOULCURSES)

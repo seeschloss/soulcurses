@@ -22,11 +22,11 @@ module soulcurses;
 
 import system, messages, message_codes;
 
-import std.cstream, std.file,  std.datetime;
-import std.socket, std.stream, std.socketstream, core.thread;
+import undead.cstream, std.file,  std.datetime;
+import std.socket, undead.stream, undead.socketstream, core.thread;
 
 import std.json, std.array, std.string, std.variant, std.regex;
-import std.random, core.stdc.stdlib;
+import std.random, core.stdc.stdlib, std.conv;
 
 Server server;
 

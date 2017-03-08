@@ -23,7 +23,7 @@ module messages;
 
 import defines;
 
-import std.stream, std.outbuffer, std.cstream;
+import undead.stream, std.outbuffer, undead.cstream;
 import std.format, std.digest.md, std.conv, std.string;
 
 private import message_codes;
