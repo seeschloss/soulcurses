@@ -1211,11 +1211,6 @@ class Stream : InputStream, OutputStream {
     return result;
   }
 
-  private void doFormatCallback(dchar c) {
-    char[4] buf;
-    auto b = std.utf.toUTF8(buf, c);
-    writeString(b);
-  }
 
   // writes data to stream using writef() syntax,
   OutputStream writef(...) {
@@ -1228,12 +1223,6 @@ class Stream : InputStream, OutputStream {
   }
 
   // writes data with optional trailing newline
-  OutputStream writefx(TypeInfo[] arguments, va_list argptr, int newline=false) {
-    doFormat(&doFormatCallback,arguments,argptr);
-    if (newline)
-      writeLine("");
-    return this;
-  }
 
   /***
    * Copies all data from s into this stream.
@@ -2844,7 +2833,7 @@ class MmFileStream : TArrayStream!(MmFile) {
   override void close() {
     if (isopen) {
       super.close();
-      delete buf;
+      buf.destroy();
       buf = null;
     }
   }

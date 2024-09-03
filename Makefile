@@ -30,7 +30,7 @@ $(BIN): $(FILES)
 ifeq ($(DC), gdc)
 		$(DC) $(FILES) -I$(SRCDIR) -lreadline -o$(BIN)
 else
-		$(DC) $(FILES) -I$(SRCDIR) -L-lreadline -od$(OBJDIR) -of$(BIN) -gc
+		$(DC) $(FILES) -I$(SRCDIR) -L-lreadline -od$(OBJDIR) -of$(BIN) -g
 endif
 
 install: $(SOULCURSES)

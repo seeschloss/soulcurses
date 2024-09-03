@@ -28,6 +28,9 @@ import std.socket, undead.stream, undead.socketstream, core.thread;
 import std.json, std.array, std.string, std.variant, std.regex;
 import std.random, core.stdc.stdlib, std.conv;
 
+import std.stdio : write, writeln, stdout, stderr;
+import std.format;
+
 import core.stdc.stdlib;
 
 Server server;
@@ -74,27 +77,27 @@ class InputThread : core.thread.Thread
 void print (S...)(S args)
 	{
 	auto time = Clock.currTime(UTC());
-	dout.writef("\r[%04d/%02d/%02d %02d:%02d:%02d UTC] ", time.year, time.month, time.day, time.hour, time.minute, time.second);
-	dout.writef(args);
-	dout.writef("\n> ");
-	dout.flush();
+	stdout.writef("\r[%04d/%02d/%02d %02d:%02d:%02d UTC] ", time.year, time.month, time.day, time.hour, time.minute, time.second);
+	stdout.writef(args);
+	stdout.write("\n> ");
 	}
 
 void log (S...)(S args)
 	{
 	auto time = Clock.currTime(UTC());
-	dout.writef("\r[%04d/%02d/%02d %02d:%02d:%02d UTC] ", time.year, time.month, time.day, time.hour, time.minute, time.second);
-	dout.writef(args);
-	dout.writef("\n> ");
-	dout.flush();
+	stdout.writef("\r[%04d/%02d/%02d %02d:%02d:%02d UTC] ", time.year, time.month, time.day, time.hour, time.minute, time.second);
+	stdout.writef(args);
+	stdout.writef("\n> ");
+	stdout.flush();
 	}
 
 void err (S...)(S args)
 	{
 	auto time = Clock.currTime(UTC());
-	derr.writef("\r[%04d/%02d/%02d %02d:%02d:%02d UTC] ", time.year, time.month, time.day, time.hour, time.minute, time.second);
-	derr.writef(args);
-	derr.writef("\n");
+	stderr.writef("\r[%04d/%02d/%02d %02d:%02d:%02d UTC] ", time.year, time.month, time.day, time.hour, time.minute, time.second);
+	stderr.writef(args);
+	stderr.writef("\n");
+	stderr.flush();
 	}
 
 int main (string[] args)
